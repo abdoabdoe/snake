@@ -134,11 +134,20 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 16));
         if (gameOver)
         {
+            g.setFont(new Font("Arial", Font.BOLD, 50)); // Set a large font size
             g.setColor(Color.red);
-            g.drawString("GameOver: " + String.valueOf(body.size()), tileSize - 16, tileSize );
-        }
-        else {
-            g.drawString("Score: " + String.valueOf(body.size()), tileSize - 16, tileSize);
+
+            String gameOverText = "GAME OVER!";
+            FontMetrics metrics = g.getFontMetrics();
+
+            int x = (boardWidth - metrics.stringWidth(gameOverText)) / 2; // Center horizontally
+            int y = boardHeight / 2; // Center vertically
+
+            g.drawString(gameOverText, x, y);
+        } else {
+            g.setFont(new Font("Arial", Font.PLAIN, 16)); // Set normal font for score
+            g.setColor(Color.white);
+            g.drawString("Score: " + body.size(), 10, 20);
         }
 
 
