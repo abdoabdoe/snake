@@ -34,7 +34,7 @@ Installation & Running the Game
 sh
 Copy
 Edit
-git clone https://github.com/YOUR_USERNAME/SnakeGame.git
+git clone https://github.com/abdoabdoe/SnakeGame.git
 cd SnakeGame
 2. Build & Run with Maven
 If you have Maven installed, you can compile and run the project with:
