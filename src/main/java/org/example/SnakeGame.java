@@ -28,6 +28,9 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (gameOver && e.getKeyCode() == KeyEvent.VK_ENTER) {
+            resetGame();
+        }
         if(e.getKeyCode() == KeyEvent.VK_UP && velocityY != -1 )
         {
             velocityX = 0;
@@ -134,20 +137,29 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 16));
         if (gameOver)
         {
-            g.setFont(new Font("Arial", Font.BOLD, 50)); // Set a large font size
-            g.setColor(Color.red);
+            if (gameOver) {
+                g.setFont(new Font("Arial", Font.BOLD, 50));
+                g.setColor(Color.WHITE);
 
-            String gameOverText = "GAME OVER!";
-            FontMetrics metrics = g.getFontMetrics();
+                String gameOverText = "GAME OVER!";
+                String restartText = "Press ENTER to Restart";
 
-            int x = (boardWidth - metrics.stringWidth(gameOverText)) / 2; // Center horizontally
-            int y = boardHeight / 2; // Center vertically
+                FontMetrics gameOverMetrics = g.getFontMetrics(g.getFont());
+                int gameOverX = (boardWidth - gameOverMetrics.stringWidth(gameOverText)) / 2;
+                int gameOverY = boardHeight / 2 - 20;  // Centering it properly
 
-            g.drawString(gameOverText, x, y);
-        } else {
-            g.setFont(new Font("Arial", Font.PLAIN, 16)); // Set normal font for score
-            g.setColor(Color.white);
-            g.drawString("Score: " + body.size(), 10, 20);
+                g.drawString(gameOverText, gameOverX, gameOverY);
+
+                // Change font for restart text
+                g.setFont(new Font("Arial", Font.BOLD, 20));
+                FontMetrics restartMetrics = g.getFontMetrics(g.getFont());
+
+                int restartX = (boardWidth - restartMetrics.stringWidth(restartText)) / 2;
+                int restartY = gameOverY + gameOverMetrics.getHeight() + 50;  // Adjusted positioning
+
+                g.drawString(restartText, restartX, restartY);
+            }
+
         }
 
 
@@ -203,6 +215,16 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     public boolean collision(tile tile1,tile tile2)
     {
         return tile1.x  == tile2.x && tile1.y == tile2.y;
+    }
+    public void resetGame() {
+        snakeHead = new tile(5, 5);
+        body.clear(); // Clear snake's body
+        placeFood();  // Generate a new food position
+        velocityX = 0;
+        velocityY = 0;
+        gameOver = false;
+        gameLoop.start(); // Restart the game loop
+        repaint();
     }
 
 }
